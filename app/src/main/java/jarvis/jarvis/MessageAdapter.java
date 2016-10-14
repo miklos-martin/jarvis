@@ -16,7 +16,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     public MessageAdapter(Context context, List<Message> objects) {
         super(context, R.layout.human, objects);
-        LayoutInflater inflater = LayoutInflater.from(getContext());
     }
 
     @Override
@@ -41,5 +40,4 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         if (item.isHuman()) return HUMAN;
         else return BOT;
     }
-
 }
