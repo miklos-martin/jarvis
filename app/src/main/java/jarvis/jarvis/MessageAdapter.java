@@ -12,14 +12,27 @@ import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
     private static final int HUMAN = 0, BOT = 1;
+    private static final int[] layouts = new int[] { R.layout.human, R.layout.bot };
 
     public MessageAdapter(Context context, List<Message> objects) {
-        super(context, R.layout.item_human_message, objects);
+        super(context, R.layout.human, objects);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
     }
 
     @Override
     public int getViewTypeCount() {
         return 2;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        int layout = layouts[getItemViewType(position)];
+        convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
+        TextView textView = (TextView) convertView.findViewById(R.id.text);
+        textView.setText(getItem(position).getContent());
+
+        return convertView;
     }
 
     @Override
@@ -29,22 +42,4 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         else return BOT;
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        int viewType = getItemViewType(position);
-        int layout;
-
-        if (viewType == HUMAN) {
-            layout = R.layout.item_human_message;
-        } else {
-            layout = R.layout.item_bot_message;
-        }
-
-        convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
-        TextView textView = (TextView) convertView.findViewById(R.id.text);
-        textView.setText(getItem(position).getContent());
-
-        return convertView;
-    }
 }
