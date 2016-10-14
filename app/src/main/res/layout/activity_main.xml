@@ -11,14 +11,14 @@
     tools:context="jarvis.jarvis.MainActivity">
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/send_message_layout"
+        android:layout_above="@+id/input_container"
         android:divider="@null" />
 
     <LinearLayout
-        android:id="@+id/send_message_layout"
+        android:id="@+id/input_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -27,18 +27,20 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/et_message"
+            android:id="@+id/input"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:hint="@string/hint" />
 
         <ImageButton
-            android:id="@+id/btn_send"
+            android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/send"
+            android:contentDescription="@string/send"
             android:text="@string/send" />
     </LinearLayout>
 </RelativeLayout>

@@ -13,8 +13,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.listView) ListView listView;
-    @BindView(R.id.et_message) EditText editTextMessage;
+    @BindView(R.id.list) ListView list;
+    @BindView(R.id.input) EditText input;
     private MessageAdapter adapter;
 
     @Override
@@ -24,16 +24,16 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         adapter = new MessageAdapter(this, new ArrayList<Message>());
-        listView.setAdapter(adapter);
+        list.setAdapter(adapter);
         adapter.add(new BotMessage(getString(R.string.bot_hi)));
     }
 
-    @OnClick(R.id.btn_send)
+    @OnClick(R.id.send)
     public void onSend() {
-        String message = editTextMessage.getText().toString();
+        String message = input.getText().toString();
         sendMessage(message);
-        editTextMessage.setText("");
-        listView.setSelection(adapter.getCount() - 1);
+        input.setText("");
+        list.setSelection(adapter.getCount() - 1);
     }
 
     private void sendMessage(String message) {
