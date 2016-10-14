@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.send)
     public void onSend() {
         String message = input.getText().toString();
+        if (message.isEmpty()) return;
+
         sendMessage(message);
         input.setText("");
         list.setSelection(adapter.getCount() - 1);
