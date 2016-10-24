@@ -21,4 +21,9 @@ public abstract class Message {
     public boolean equals(Object obj) {
         return obj instanceof Message && ((Message) obj).content.equals(content);
     }
+
+    @Override
+    public String toString() {
+        return content;
+    }
 }
