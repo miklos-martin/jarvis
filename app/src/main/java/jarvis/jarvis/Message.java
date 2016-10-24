@@ -16,4 +16,9 @@ public abstract class Message {
     public boolean isHuman() {
         return isHuman;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Message && ((Message) obj).content.equals(content);
+    }
 }

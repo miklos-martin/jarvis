@@ -1,5 +1,6 @@
 package jarvis.jarvis;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -16,10 +17,12 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.list) ListView list;
     @BindView(R.id.input) EditText input;
     private MessageAdapter adapter;
+    private final Jarvis jarvis = JarvisFactory.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -35,11 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
         sendMessage(message);
         input.setText("");
-        list.setSelection(adapter.getCount() - 1);
     }
 
     private void sendMessage(String message) {
-        adapter.add(new HumanMessage(message));
-        adapter.add(new BotMessage(message));
+        HumanMessage msg = new HumanMessage(message);
+        adapter.add(msg);
+
+        new RespondTask().execute(msg);
+    }
+
+    private class RespondTask extends AsyncTask<HumanMessage, Void, BotMessage> {
+        @Override
+        protected BotMessage doInBackground(HumanMessage... params) {
+            return jarvis.respond(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(BotMessage botMessage) {
+            adapter.add(botMessage);
+            list.setSelection(adapter.getCount() - 1);
+        }
     }
 }
