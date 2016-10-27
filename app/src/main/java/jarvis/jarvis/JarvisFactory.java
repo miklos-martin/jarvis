@@ -6,6 +6,7 @@ public class JarvisFactory {
         Jarvis jarvis = new Jarvis();
         jarvis.add(new ChuckNorris(util));
         jarvis.add(new GreetingsHuman());
+        jarvis.add(new HowDoI(util));
 
         return jarvis;
     }

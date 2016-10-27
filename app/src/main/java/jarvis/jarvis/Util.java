@@ -15,7 +15,6 @@ public class Util {
             URL url = new URL(targetUrl);
             connection = (HttpURLConnection) url.openConnection();
             connection.setUseCaches(false);
-            connection.setDoOutput(true);
 
             InputStream is = connection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));

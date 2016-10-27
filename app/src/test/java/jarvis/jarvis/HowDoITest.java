@@ -1,5 +1,7 @@
 package jarvis.jarvis;
 
+import android.support.annotation.NonNull;
+
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -10,6 +12,9 @@ import static org.junit.Assert.*;
 public class HowDoITest {
 
     private final HowDoI howDoI = new HowDoI(new Util());
+    private final HumanMessage humanMessage = new HumanMessage("how do i asd?");
+    private final String searchphrase = "site:stackoverflow.com asd";
+    private final BotMessage emptyMessage = new BotMessage(HowDoI.DEFAULT_REPLY);
 
     @Test
     public void supportsSpecificQuestions() {
@@ -38,33 +43,56 @@ public class HowDoITest {
 
     @Test
     public void searchesProperly() {
-        HumanMessage msg = new HumanMessage("how do i asd?");
-        String expectedSearchphrase = "site:stackoverflow.com asd";
-
-        Responses responses = new Responses(expectedSearchphrase, "");
+        Responses responses = new Responses(searchphrase, "");
         MockUtil util = new MockUtil(responses);
-        BotMessage response = new HowDoI(util).respond(msg);
+        BotMessage response = new HowDoI(util).respond(humanMessage);
         assertEquals(1, util.called);
 
-        assertEquals(new BotMessage(HowDoI.DEFAULT_REPLY), response);
+        assertEquals(emptyMessage, response);
     }
 
     @Test
     public void loadsStackoverflow() {
-        HumanMessage msg = new HumanMessage("how do i asd?");
-        String expectedSearchphrase = "site:stackoverflow.com asd";
+        Responses responses = validSearch();
+        MockUtil util = new MockUtil(responses);
+        BotMessage response = new HowDoI(util).respond(humanMessage);
+        assertEquals(2, util.called);
 
-        Responses responses = new Responses(
-                expectedSearchphrase,
+        assertEquals(emptyMessage, response);
+    }
+
+    @Test
+    public void extractsAnswer() {
+        Responses responses = validSearch();
+        responses.sr = "<html><div class=\"answer\">...<div class=\"post-text\">ANSWER</div></div></html>";
+
+        MockUtil util = new MockUtil(responses);
+        BotMessage response = new HowDoI(util).respond(humanMessage);
+        assertEquals(2, util.called);
+
+        assertEquals(new BotMessage("ANSWER", HowDoI.SAY_THIS), response);
+    }
+
+    @Test
+    public void extractsCodeFromAnswer() {
+        Responses responses = validSearch();
+        responses.sr = "<html><div class=\"answer\">...<div class=\"post-text\">..<pre><code>CODE</code></pre>...</div></div></html>";
+
+        MockUtil util = new MockUtil(responses);
+        BotMessage response = new HowDoI(util).respond(humanMessage);
+        assertEquals(2, util.called);
+
+        assertEquals(new BotMessage("CODE", HowDoI.SAY_THIS), response);
+    }
+
+    @NonNull
+    private Responses validSearch() {
+        return new Responses(
+                searchphrase,
                 "<html><h3 class=\"r\"><a href=\"SOURL\">asd</a></h3></html>",
                 "SOURL",
                 ""
         );
-        MockUtil util = new MockUtil(responses);
-        BotMessage response = new HowDoI(util).respond(msg);
-        assertEquals(2, util.called);
-
-        assertEquals(new BotMessage(HowDoI.DEFAULT_REPLY), response);
     }
 
     private class Responses {

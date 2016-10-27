@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(BotMessage botMessage) {
             adapter.add(botMessage);
             list.setSelection(adapter.getCount() - 1);
-            tts.speak(botMessage.getContent(), TextToSpeech.QUEUE_FLUSH, null, null);
+            tts.speak(botMessage.getSayable(), TextToSpeech.QUEUE_FLUSH, null, null);
         }
     }
 
