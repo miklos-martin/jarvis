@@ -2,6 +2,7 @@ package jarvis.jarvis;
 
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,20 +37,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @OnEditorAction(R.id.input)
+    public boolean onEditorAction() {
+        onSend();
+        return true;
+    }
+
     @OnClick(R.id.send)
     public void onSend() {
         String message = input.getText().toString();
         if (message.isEmpty()) return;
 
-        sendMessage(message);
+        humanSay(message);
         input.setText("");
     }
 
-    private void sendMessage(String message) {
+    private void humanSay(String message) {
         HumanMessage msg = new HumanMessage(message);
         adapter.add(msg);
 
         new RespondTask().execute(msg);
+    }
+
+    private void botSay(BotMessage msg) {
+        adapter.add(msg);
+        tts.speak(msg.getSayable(), TextToSpeech.QUEUE_FLUSH, null, null);
+        list.setSelection(adapter.getCount() - 1);
     }
 
     private class RespondTask extends AsyncTask<HumanMessage, Void, BotMessage> {
@@ -59,17 +73,25 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(BotMessage botMessage) {
-            adapter.add(botMessage);
-            list.setSelection(adapter.getCount() - 1);
-            tts.speak(botMessage.getSayable(), TextToSpeech.QUEUE_FLUSH, null, null);
+            botSay(botMessage);
         }
     }
 
     private class TextToSpeechInitializer implements TextToSpeech.OnInitListener {
+        private static final String VOICE_NAME = "en-gb-x-fis#male_3-local";
+
         @Override
         public void onInit(int status) {
             tts.setLanguage(Locale.getDefault());
-            tts.setPitch(1.1f);
+            try {
+                for (Voice voice :  tts.getVoices()) {
+                    if (voice.getName().equals(VOICE_NAME)) {
+                        tts.setVoice(voice);
+                        break;
+                    }
+                }
+            } catch (NullPointerException e) {}
+
             new RespondTask().execute(new HumanMessage("hi"));
         }
     }

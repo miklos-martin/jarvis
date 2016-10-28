@@ -1,7 +1,5 @@
 package jarvis.jarvis;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,11 +14,12 @@ public class GreetingsHuman implements Responder {
 
     @Override
     public BotMessage respond(HumanMessage message) {
-        List<String> greetings = new ArrayList<>();
-        greetings.add("Hola");
-        greetings.add("Hi!");
-        greetings.add("Well, hello there!");
-        greetings.add("Yeah..");
+        String[] greetings = new String[] {
+                "Hey human!",
+                "Well, hello there!",
+                "What's up?",
+                "Do you have something to say?"
+        };
 
         return new BotMessage(Util.random(greetings));
     }

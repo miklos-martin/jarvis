@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Jarvis</string>
     <string name="send">Send</string>
-    <string name="bot_hi">Hey human, I can echo back anything to you</string>
     <string name="hint">What\'s up?</string>
 </resources>
