@@ -10,20 +10,21 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cmv_backgroundColor="#88BABABA"
-        app:cmv_backgroundColorPressed="#FFBABABA"
+        app:cmv_backgroundColor="#8800bcd4"
+        app:cmv_backgroundColorPressed="#ff00bcd4"
         app:cmv_cornerRadius="3dp"
         app:cmv_arrowGravity="start"
+        app:cmv_arrowPosition="left"
         app:cmv_arrowMargin="3dp"
-        app:cmv_arrowPosition="right"
         app:cmv_showArrow="true">
 
-        <TextView
-            android:id="@+id/text"
+        <ImageView
+            android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:contentDescription="@string/image"
+            android:src="@drawable/bot" />
 
     </me.himanshusoni.chatmessageview.ChatMessageView>
 </LinearLayout>

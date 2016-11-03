@@ -3,10 +3,17 @@ package jarvis.jarvis;
 public abstract class Message {
     private String content = "";
     private boolean isHuman = true;
+    private IntentDescriptor intent;
 
     public Message(String content, boolean isHuman) {
         this.content = content;
         this.isHuman = isHuman;
+    }
+
+    public Message(String content, boolean isHuman, IntentDescriptor intent) {
+        this.content = content;
+        this.isHuman = isHuman;
+        this.intent = intent;
     }
 
     public String getContent() {
@@ -15,6 +22,14 @@ public abstract class Message {
 
     public boolean isHuman() {
         return isHuman;
+    }
+
+    public IntentDescriptor getIntent() {
+        return intent;
+    }
+
+    public boolean hasIntent() {
+        return null != intent;
     }
 
     @Override

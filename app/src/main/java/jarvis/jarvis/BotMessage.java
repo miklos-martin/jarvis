@@ -2,6 +2,7 @@ package jarvis.jarvis;
 
 public class BotMessage extends Message {
     private String sayable;
+
     public BotMessage(String content) {
         super(content, false);
         sayable = content;
@@ -9,6 +10,11 @@ public class BotMessage extends Message {
 
     public BotMessage(String content, String sayable) {
         super(content, false);
+        this.sayable = sayable;
+    }
+
+    public BotMessage(String content, String sayable, IntentDescriptor intent) {
+        super(content, false, intent);
         this.sayable = sayable;
     }
 
