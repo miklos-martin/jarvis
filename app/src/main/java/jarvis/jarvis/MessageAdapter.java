@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -55,17 +56,17 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         new DownloadTask(imageView).execute(message.getContent());
     }
 
-    private void handleText(View convertView, Message message) {
-        TextView textView = (TextView) convertView.findViewById(R.id.text);
-        textView.setText(message.getContent());
-    }
-
     private void handleIntent(View convertView, Message message) {
         if (message.hasIntent()) {
             convertView
                     .findViewById(R.id.container)
                     .setOnClickListener(new IntentListener(message.getIntent()));
         }
+    }
+
+    private void handleText(View convertView, Message message) {
+        TextView textView = (TextView) convertView.findViewById(R.id.text);
+        textView.setText(message.getContent());
     }
 
     @Override
@@ -109,10 +110,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(intentDescriptor.action, intentDescriptor.uri);
+            Intent intent = new Intent(intentDescriptor.action, Uri.parse(intentDescriptor.uri));
             intent.setPackage(intentDescriptor.packageName);
             getContext().startActivity(intent);
-            System.out.println("klikkkkk");
         }
     }
 }
